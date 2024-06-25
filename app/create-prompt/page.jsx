@@ -1,9 +1,13 @@
-import React from 'react'
+'use client';
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
-const page = () => {
+
+const CreatePrompt = () => {
   return (
-    <div>page</div>
+    <div>CreatePrompt</div>
   )
 }
 
-export default page
+export default CreatePrompt
