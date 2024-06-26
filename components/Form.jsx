@@ -26,12 +26,12 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
                 Tag {` `}
                 <span className='font-normal' > (#product, #webdevelopment, #idea) </span>
                 </span>
-                <textarea
-                value={post.prompt}
-                onChange={(e) => setPost({ ...post, prompt: e.target.value })}
-                placeholder='Write your prompt here'
+                <input
+                value={post.tag}
+                onChange={(e) => setPost({ ...post, tag: e.target.value })}
+                placeholder='#tag'
                 required
-                className='form_textarea'
+                className='form_input'
                 />
             </label>
         </form>
