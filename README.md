@@ -28,3 +28,6 @@ This app stores the prompts of users and shows them based on tags.
  - Search by username
 2. Implement Click on tag
 3. Implement View other profiles
+
+## Source   
+https://www.youtube.com/watch?v=wm5gMKuwSYk ( deployment yet to happen )
