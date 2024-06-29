@@ -1,30 +1,41 @@
 'use client';
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Form from '@components/Form';
 
 
-const updatePrompt = () => {
+const editPrompt = () => {
 	const [submitting, setsubmitting] = useState(false);
 	const [post, setPost] = useState({
 		prompt: '',
 		tag: ''
 	});
-	const { data: session } = useSession()
-	const router = useRouter()
+	const router = useRouter();
+    const searchParams = useSearchParams();
+    const promptId = searchParams.get('id');
 
+    useEffect(() => {
+      const getPromptDetails = async () => {
+        const response = await fetch(`/api/prompt/${promptId}`);
+        const data = await response.json();
+        const { prompt, tag } = data;
+        setPost({ prompt, tag });
+      }
 
-	const CreatePrompt = async (e) => {
+      if(promptId) getPromptDetails();
+    }, [promptId])
+
+    const updatePrompt = async (e) => {
 		e.preventDefault();
 		setsubmitting(true);
 
+        if(!promptId) return alert('Prompt ID not found');
+
 		try {
-			const response = await fetch('/api/prompt/new', {
-				method: 'POST',
+			const response = await fetch(`/api/prompt/${promptId}`, {
+				method: 'PATCH',
 				body: JSON.stringify({
 					prompt : post.prompt,
-					userId: session?.user.id,
 					tag: post.tag,
 				})
 			})
@@ -37,15 +48,16 @@ const updatePrompt = () => {
 			setsubmitting(false);
 		}
 	}
+
   return (
     <Form
-		  type="Create"
+		  type="Edit"
 			post={post}
 			setPost={setPost}
 			submitting={submitting}
-			handleSubmit={CreatePrompt}
+			handleSubmit={updatePrompt}
 		/>
   )
 }
 
-export default updatePrompt
+export default editPrompt
